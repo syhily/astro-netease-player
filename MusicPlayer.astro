@@ -1,6 +1,6 @@
 ---
 import 'aplayer-ts/src/css/base.css';
-import { resolveSong, type MusicPlayerProps } from "./resolver";
+import { resolveSong, type MusicPlayerProps } from './resolver';
 
 interface Props extends MusicPlayerProps {}
 
@@ -11,28 +11,28 @@ const { name, artist, url, pic } = await resolveSong(Astro.props);
   url === '' ? (
     <p>歌曲加载失败</p>
   ) : (
-    <div class='aplayer' data-name={name} data-artist={artist} data-url={url} data-cover={pic}>
+    <div class="aplayer" data-name={name} data-artist={artist} data-url={url} data-cover={pic}>
       音乐正在加载中 ...
     </div>
   )
 }
 
 <script>
-import APlayer from 'aplayer-ts';
+  import APlayer from 'aplayer-ts';
 
-for (const p of document.querySelectorAll(`.aplayer`)) {
-  const e = p as HTMLElement;
-  APlayer().init({
-    container: e,
-    audio: [
-      {
-        name: e.dataset.name,
-        artist: e.dataset.artist,
-        url: e.dataset.url,
-        cover: e.dataset.cover,
-        theme: '#ebd0c2',
-      },
-    ],
-  });
-}
+  for (const p of document.querySelectorAll(`.aplayer`)) {
+    const e = p as HTMLElement;
+    APlayer().init({
+      container: e,
+      audio: [
+        {
+          name: e.dataset.name,
+          artist: e.dataset.artist,
+          url: e.dataset.url,
+          cover: e.dataset.cover,
+          theme: '#ebd0c2',
+        },
+      ],
+    });
+  }
 </script>
