@@ -1,6 +1,6 @@
 {
 	"name": "astro-netease-player",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "A netease music plugin for adding a player to your astro website.",
 	"keywords": ["Astro", "netease", "aplayer", "withastro"],
 	"bugs": {
