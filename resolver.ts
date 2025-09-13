@@ -1,10 +1,11 @@
-import { getHighResSongUrl, getSongInfo } from './services';
+import { getHighResSongUrl, getLyrics, getSongInfo } from './services';
 
 export type Song = {
   name: string;
   artist: string;
   url: string;
   pic: string;
+  lyric: string;
 };
 
 // The props for music player. We support both netease music and direct linked music.
@@ -13,7 +14,7 @@ export interface MusicPlayerProps {
   song?: Song;
 }
 
-const emptySong = { name: '', artist: '', url: '', pic: '' };
+const emptySong = { name: '', artist: '', url: '', pic: '', lyric: '' };
 
 const song = async (props: MusicPlayerProps): Promise<Song> => {
   const { netease, song } = props;
@@ -21,6 +22,7 @@ const song = async (props: MusicPlayerProps): Promise<Song> => {
   if (netease) {
     const info = await getSongInfo(netease);
     const url = await getHighResSongUrl(netease);
+    const lyric = await getLyrics(netease);
 
     // Check the return result.
     return {
@@ -28,6 +30,7 @@ const song = async (props: MusicPlayerProps): Promise<Song> => {
       artist: info.artists !== undefined ? info.artists[0].name : '',
       url: url || `https://music.163.com/song/media/outer/url?id=${netease}.mp3`,
       pic: info.album?.picUrl || '',
+      lyric: lyric || '[00:00.00]无歌词',
     };
   }
 
