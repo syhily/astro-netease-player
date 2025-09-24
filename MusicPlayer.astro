@@ -1,10 +1,11 @@
 ---
 import 'aplayer-ts/src/css/base.css';
-import { resolveSong, type MusicPlayerProps } from './resolver';
+import { resolveSongURL, type MusicPlayerProps } from './resolver';
 
 interface Props extends MusicPlayerProps {}
 
-const { name, artist, url, pic, lyric } = await resolveSong(Astro.props);
+const { name, artist, pic, lyric } = Astro.props;
+const url = await resolveSongURL(Astro.props);
 ---
 
 {

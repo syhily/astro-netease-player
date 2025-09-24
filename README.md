@@ -18,14 +18,19 @@ yarn add -D astro-netease-player
 
 ## Usage
 
-### Use in MDX file
+### Modify MDX file
 
 Open any MDX file and insert the `<MusicPlayer netease={1331313370} />` tag.
 The `1331313370` can be changed to the music id you like from the Netease music.
 
+If the music is premium member only. You need to switch to a fallback API.
+Use `<MusicPlayer netease={1331313370} premium={true} />` instead.
+
 Go the the MDX render logic in your Astro post file. Modify the astro file as the sample shown below.
 
-```
+### Change the render method
+
+```astro
 ---
 import MusicPlayer from 'astro-netease-player/MusicPlayer.astro';
 
@@ -35,6 +40,20 @@ const { Content, headings } = await post.render();
 <Content components={{ MusicPlayer: MusicPlayer }} />
 ```
 
-### Use in Astro component
+### Add the rehype plugin
 
-Simply import the `astro-netease-player/MusicPlayer.astro` and use it as an Astro tag.
+Edit your Astro configuration file.
+
+```ts
+import rehypeMusicPlayer from 'astro-netease-player/rehype'
+
+{
+  integrations: [
+    mdx({
+      rehypePlugins: [
+        rehypeMusicPlayer,
+      ],
+    }),
+  ],
+}
+```
