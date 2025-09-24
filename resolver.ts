@@ -1,52 +1,59 @@
-import { getHighResSongUrl, getLyrics, getSongInfo } from './services';
+import * as api from './providers/api'
+import * as eapi from './providers/eapi'
 
-export type Song = {
-  name: string;
-  artist: string;
-  url: string;
-  pic: string;
-  lyric: string;
-};
+export interface Song {
+  name: string
+  artist: string
+  url: string
+  pic: string
+  lyric: string
+}
+
+export type SongInfo = Pick<Song, 'name' | 'artist' | 'pic'>
 
 // The props for music player. We support both netease music and direct linked music.
 export interface MusicPlayerProps {
-  netease?: string;
-  song?: Song;
+  netease: string
 }
 
-const emptySong = { name: '', artist: '', url: '', pic: '', lyric: '' };
-
-const song = async (props: MusicPlayerProps): Promise<Song> => {
-  const { netease, song } = props;
-
-  if (netease) {
-    const info = await getSongInfo(netease);
-    const url = await getHighResSongUrl(netease);
-    const lyric = await getLyrics(netease);
-
-    // Check the return result.
-    return {
-      name: info.name,
-      artist: info.artists !== undefined ? info.artists[0].name : '',
-      url: url || `https://music.163.com/song/media/outer/url?id=${netease}.mp3`,
-      pic: info.album?.picUrl || '',
-      lyric: lyric || '[00:00.00]无歌词',
-    };
-  }
-
-  if (song) {
-    return song;
-  }
-
-  console.error('No song information is provided, check your code.');
-  return emptySong;
-};
-
-export const resolveSong = async (props: MusicPlayerProps): Promise<Song> => {
-  // Try-catch for avoiding the unexpected errors.
+export async function resolveSong(props: MusicPlayerProps): Promise<Song> {
+  const { netease } = props
+  const result = { name: '', artist: '', pic: '', url: '', lyric: '' }
   try {
-    return await song(props);
-  } catch (e) {
-    return emptySong;
+    const info = await eapi.getSongInfo(netease)
+    result.name = info.name
+    result.artist = info.artist
+    result.pic = info.pic
+
+    const lyric = await eapi.getLyrics(netease)
+    result.lyric = lyric || '[00:00.00]无歌词'
+
+    const url = await eapi.getSongUrl(netease, 'standard')
+    result.url = url || ''
   }
-};
+  catch (err) {
+    console.error(err)
+  }
+  try {
+    if (result.name === '') {
+      const info = await api.getSongInfo(netease)
+      result.name = info.name
+      result.artist = info.artist
+      result.pic = info.pic
+    }
+
+    if (result.lyric === '') {
+      const lyric = await api.getLyrics(netease)
+      result.lyric = lyric || '[00:00.00]无歌词'
+    }
+
+    if (result.url === '') {
+      const url = await api.getSongUrl(netease, 'standard')
+      result.url = url || ''
+    }
+  }
+  catch (err) {
+    console.error(err)
+  }
+  return result
+}
