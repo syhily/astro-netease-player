@@ -1,9 +1,9 @@
 ---
-import { resolveSong, type MusicPlayerProps } from './resolver';
+import { resolveSongURL, type MusicPlayerProps } from './resolver';
 
 interface Props extends MusicPlayerProps {}
 
-const { url } = await resolveSong(Astro.props);
+const url = await resolveSongURL(Astro.props);
 ---
 
 {url !== '' && <audio src={url} />}

@@ -21,7 +21,7 @@ export interface MusicPlayerProps extends Partial<SongWithoutURL> {
 
 export async function resolveSongWithoutURL(props: MusicPlayerProps): Promise<SongWithoutURL> {
   const { netease } = props
-  const result = { name: '', artist: '', pic: '', url: '', lyric: '' }
+  const result = { name: '', artist: '', pic: '', lyric: '' }
   try {
     const info = await eapi.getSongInfo(netease)
     result.name = info.name
@@ -45,11 +45,6 @@ export async function resolveSongWithoutURL(props: MusicPlayerProps): Promise<So
     if (result.lyric === '') {
       const lyric = await api.getLyrics(netease)
       result.lyric = lyric || '[00:00.00]无歌词'
-    }
-
-    if (result.url === '') {
-      const url = await api.getSongUrl(netease, 'standard')
-      result.url = url || ''
     }
   }
   catch (err) {
