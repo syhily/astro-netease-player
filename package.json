@@ -1,6 +1,6 @@
 {
   "name": "astro-netease-player",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "A netease music plugin for adding a player to your astro website.",
   "keywords": [
     "astro",
@@ -21,8 +21,15 @@
   "author": "Yufan Sheng <syhily@gmail.com>",
   "sideEffects": false,
   "type": "module",
+  "files": [
+    "resolver.ts",
+    "MusicPlayer.astro",
+    "UnstyledMusicPlayer.astro",
+    "rehype.ts",
+    "provides/"
+  ],
   "exports": {
-    "./resolver.ts": "./resolver.ts",
+    "./resolver": "./resolver.ts",
     "./MusicPlayer.astro": {
       "types": "./MusicPlayer.astro.tsx",
       "import": "./MusicPlayer.astro"
@@ -31,10 +38,10 @@
       "types": "./UnstyledMusicPlayer.astro.tsx",
       "import": "./UnstyledMusicPlayer.astro"
     },
-    "./rehype.ts": "./rehype.ts",
-    "./provides/api.ts": "./provides/api.ts",
-    "./provides/config.ts": "./provides/config.ts",
-    "./provides/eapi.ts": "./provides/eapi.ts"
+    "./rehype": "./rehype.ts",
+    "./provides/api": "./provides/api.ts",
+    "./provides/config": "./provides/config.ts",
+    "./provides/eapi": "./provides/eapi.ts"
   },
   "scripts": {
     "lint": "prettier . --write"
